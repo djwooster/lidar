@@ -38,51 +38,24 @@ const faqs = [
 ];
 
 function FAQItem({
-  faq,
-  isOpen,
-  onToggle,
-  reduced,
+  faq, isOpen, onToggle, reduced,
 }: {
-  faq: (typeof faqs)[0];
-  isOpen: boolean;
-  onToggle: () => void;
-  reduced: boolean;
+  faq: (typeof faqs)[0]; isOpen: boolean; onToggle: () => void; reduced: boolean;
 }) {
   return (
-    <div
-      className={`rounded-xl border transition-colors duration-200 overflow-hidden ${
-        isOpen
-          ? "border-[#22d3ee]/25 bg-[#1e293b]/60"
-          : "border-[#94a3b8]/12 bg-[#1e293b]/30"
-      }`}
-    >
+    <div className={`border-b transition-colors duration-200 ${isOpen ? "border-white/10" : "border-white/[0.05]"}`}>
       <button
-        className="w-full px-5 py-5 flex items-start justify-between gap-4 text-left"
+        className="w-full py-5 flex items-start justify-between gap-6 text-left group"
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={`faq-panel-${faq.id}`}
         id={`faq-trigger-${faq.id}`}
       >
-        <span
-          className={`font-semibold text-base leading-snug transition-colors duration-200 ${
-            isOpen ? "text-[#22d3ee]" : "text-white"
-          }`}
-        >
+        <span className={`font-medium text-base leading-snug transition-colors duration-200 ${isOpen ? "text-white" : "text-white/60 group-hover:text-white/80"}`}>
           {faq.question}
         </span>
-        <div
-          className={`mt-0.5 shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-colors duration-200 ${
-            isOpen
-              ? "border-[#22d3ee] text-[#22d3ee]"
-              : "border-[#94a3b8]/30 text-[#94a3b8]"
-          }`}
-          aria-hidden="true"
-        >
-          {isOpen ? (
-            <Minus className="w-3 h-3" />
-          ) : (
-            <Plus className="w-3 h-3" />
-          )}
+        <div className="mt-0.5 shrink-0 text-white/20 group-hover:text-white/40 transition-colors duration-200" aria-hidden="true">
+          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
         </div>
       </button>
 
@@ -95,14 +68,13 @@ function FAQItem({
             key="content"
             initial={reduced ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            exit={reduced ? { opacity: 1, height: 0 } : { opacity: 0, height: 0 }}
-            transition={reduced ? { duration: 0 } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+            exit={reduced ? { opacity: 0, height: 0 } : { opacity: 0, height: 0 }}
+            transition={reduced ? { duration: 0 } : { duration: 0.3, ease: "easeOut" }}
             style={{ overflow: "hidden", willChange: "height" }}
           >
-            <div className="px-5 pb-5">
-              <div className="w-full h-px bg-[#22d3ee]/10 mb-4" aria-hidden="true" />
-              <p className="text-[#94a3b8] text-sm leading-relaxed">{faq.answer}</p>
-            </div>
+            <p className="text-[#6b6b6b] text-sm leading-relaxed pb-6 max-w-2xl">
+              {faq.answer}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -114,74 +86,61 @@ export default function FAQSection() {
   const shouldReduceMotion = useReducedMotion() ?? false;
   const [openId, setOpenId] = useState<string | null>(null);
 
-  const handleToggle = (id: string) => {
-    setOpenId((prev) => (prev === id ? null : id));
-  };
-
   return (
     <section
       id="faq"
-      className="bg-[#0f172a] py-24 px-6"
+      className="bg-[#0a0a0b] py-28 px-8 border-t border-white/[0.05]"
       aria-labelledby="faq-heading"
     >
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <motion.div
-          className="mb-12"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
-          <p className="font-mono text-[#22d3ee] text-xs tracking-widest mb-3">
-            // FAQ
-          </p>
-          <h2
-            id="faq-heading"
-            className="text-3xl sm:text-4xl font-bold text-white"
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-16 lg:gap-24">
+
+          {/* Left column: heading (sticky on desktop) */}
+          <motion.div
+            className="lg:pt-1"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
           >
-            Questions Before You Book
-          </h2>
-        </motion.div>
-
-        {/* FAQ list */}
-        <motion.div
-          className="flex flex-col gap-3"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.15 }}
-        >
-          {faqs.map((faq) => (
-            <FAQItem
-              key={faq.id}
-              faq={faq}
-              isOpen={openId === faq.id}
-              onToggle={() => handleToggle(faq.id)}
-              reduced={shouldReduceMotion}
-            />
-          ))}
-        </motion.div>
-
-        {/* Bottom nudge */}
-        <motion.div
-          className="mt-10 text-center"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: 0.3 }}
-        >
-          <p className="text-[#94a3b8] text-sm mb-4">
-            Still have questions?{" "}
-            <a
-              href="mailto:hello@blueprintlidar.com"
-              className="text-[#22d3ee] hover:underline underline-offset-4"
+            <p className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-4">
+              FAQ
+            </p>
+            <h2
+              id="faq-heading"
+              className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight"
             >
-              Email us directly
-            </a>{" "}
-            — we respond within one business day.
-          </p>
-        </motion.div>
+              Questions before you book.
+            </h2>
+            <p className="text-[#6b6b6b] text-sm leading-relaxed mt-4">
+              Still have questions?{" "}
+              <a href="mailto:hello@blueprintlidar.com" className="text-white/50 hover:text-white underline-offset-4 hover:underline transition-colors">
+                Email us directly
+              </a>
+              .
+            </p>
+          </motion.div>
+
+          {/* Right column: accordion */}
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
+          >
+            <div className="border-t border-white/[0.05]">
+              {faqs.map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  faq={faq}
+                  isOpen={openId === faq.id}
+                  onToggle={() => setOpenId(prev => prev === faq.id ? null : faq.id)}
+                  reduced={shouldReduceMotion}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

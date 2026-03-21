@@ -9,135 +9,91 @@ const steps = [
     icon: Calendar,
     title: "Schedule",
     description:
-      "Book your scan online in minutes. We coordinate directly with your builder to align with the framing inspection window — the only time the walls are open.",
+      "Book online in minutes. We coordinate with your builder to align with the framing inspection window — the only time the walls are open.",
   },
   {
     number: "02",
     icon: ScanLine,
     title: "We Scan Pre-Drywall",
     description:
-      "Our technician arrives with a professional-grade LiDAR scanner and captures every inch of the framed interior — every pipe, wire, duct, and stud — in millimeter detail.",
+      "Our technician arrives with a professional-grade LiDAR scanner and captures every pipe, wire, duct, and stud in millimeter detail before insulation goes in.",
   },
   {
     number: "03",
     icon: FileCode2,
     title: "Receive Your Digital Twin",
     description:
-      "Within 48 hours you receive a permanent, shareable digital blueprint accessible from any device — yours forever, ready to share with any contractor or future buyer.",
+      "Within 48 hours you receive a permanent, shareable digital blueprint — accessible from any device, ready to share with any contractor or future buyer.",
   },
 ];
 
 export default function HowItWorks() {
   const shouldReduceMotion = useReducedMotion() ?? false;
 
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: shouldReduceMotion
-      ? { opacity: 1, y: 0 }
-      : { opacity: 0, y: 32 },
-    visible: {
-      opacity: 1,
-      y: 0,
-    },
-  };
-
   return (
     <section
       id="how-it-works"
-      className="bg-[#0f172a] py-24 px-6"
+      className="bg-[#0a0a0b] py-28 px-8"
       aria-labelledby="how-it-works-heading"
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Section header */}
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header — left-aligned */}
         <motion.div
-          className="text-center mb-16"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+          className="mb-16"
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
         >
-          <p className="font-mono text-[#22d3ee] text-xs tracking-widest mb-3">
-            // THREE STEPS
+          <p className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-4">
+            Three steps
           </p>
           <h2
             id="how-it-works-heading"
-            className="text-3xl sm:text-4xl font-bold text-white"
+            className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight max-w-lg"
           >
             How It Works
           </h2>
         </motion.div>
 
         {/* Steps */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden border border-white/[0.06]">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
               <motion.div
                 key={step.number}
-                className="relative flex flex-col items-center text-center md:items-start md:text-left"
-                variants={itemVariants}
+                className="bg-[#0a0a0b] p-8 flex flex-col"
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
                 style={{ willChange: "transform" }}
               >
-                {/* Dashed connector line — hidden on mobile, shows between steps */}
-                {index < steps.length - 1 && (
-                  <div
-                    className="hidden md:block absolute top-8 left-[calc(100%+0px)] w-full h-px"
-                    aria-hidden="true"
-                    style={{
-                      background:
-                        "repeating-linear-gradient(to right, #22d3ee33 0px, #22d3ee33 6px, transparent 6px, transparent 14px)",
-                      width: "calc(100% - 0px)",
-                      left: "calc(100% + 16px)",
-                      top: "28px",
-                    }}
-                  />
-                )}
-
-                {/* Icon + number */}
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="relative flex items-center justify-center w-14 h-14 rounded-xl border border-[#22d3ee]/20 bg-[#22d3ee]/5">
-                    <Icon
-                      className="w-6 h-6 text-[#22d3ee]"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <span className="font-mono text-3xl font-bold text-[#22d3ee]/20 leading-none select-none">
-                    {step.number}
-                  </span>
-                </div>
-
-                {/* Step number label */}
-                <p className="font-mono text-[10px] text-[#22d3ee] tracking-widest mb-2">
-                  // STEP {step.number}
+                {/* Step number */}
+                <p className="font-mono text-[10px] text-white/15 tracking-[0.2em] mb-6">
+                  {step.number}
                 </p>
 
+                {/* Icon */}
+                <div className="w-9 h-9 rounded-lg border border-white/[0.08] flex items-center justify-center mb-6">
+                  <Icon className="w-4 h-4 text-white/50" aria-hidden="true" />
+                </div>
+
                 {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3 leading-snug">
                   {step.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-[#94a3b8] text-sm leading-relaxed">
+                <p className="text-[#6b6b6b] text-sm leading-relaxed">
                   {step.description}
                 </p>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

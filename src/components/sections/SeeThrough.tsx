@@ -3,48 +3,27 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-// Label callout for SVG elements
 function Label({
-  x,
-  y,
-  text,
-  side = "right",
+  x, y, text, side = "right",
 }: {
-  x: number;
-  y: number;
-  text: string;
-  side?: "left" | "right";
+  x: number; y: number; text: string; side?: "left" | "right";
 }) {
-  const lineLength = 40;
+  const lineLength = 38;
   const lineEndX = side === "right" ? x + lineLength : x - lineLength;
-  const textAnchor = side === "right" ? "start" : "end";
-  const textX = side === "right" ? lineEndX + 6 : lineEndX - 6;
+  const textX = side === "right" ? lineEndX + 5 : lineEndX - 5;
 
   return (
     <g aria-label={text}>
-      {/* Connector dot */}
-      <circle cx={x} cy={y} r="2.5" fill="#22d3ee" />
-      {/* Connector line */}
-      <line
-        x1={x}
-        y1={y}
-        x2={lineEndX}
-        y2={y}
-        stroke="#22d3ee"
-        strokeWidth="1"
-        strokeDasharray="3 2"
-        opacity="0.7"
-      />
-      {/* Label text */}
+      <circle cx={x} cy={y} r="2" fill="#22d3ee" opacity="0.7" />
+      <line x1={x} y1={y} x2={lineEndX} y2={y} stroke="#22d3ee" strokeWidth="0.75" opacity="0.35" strokeDasharray="3 2" />
       <text
-        x={textX}
-        y={y}
+        x={textX} y={y}
         dominantBaseline="middle"
-        textAnchor={textAnchor}
-        fontSize="9"
+        textAnchor={side === "right" ? "start" : "end"}
+        fontSize="8"
         fontFamily="var(--font-geist-mono), monospace"
         fill="#22d3ee"
-        opacity="0.9"
+        opacity="0.6"
       >
         {text}
       </text>
@@ -56,95 +35,71 @@ export default function SeeThrough() {
   const shouldReduceMotion = useReducedMotion() ?? false;
   const [isDrywallHovered, setIsDrywallHovered] = useState(false);
 
-  // Animation delays for each layer
-  const getDelay = (index: number) =>
-    shouldReduceMotion ? 0 : index * 0.25;
+  const layerDelay = (i: number) => (shouldReduceMotion ? 0 : i * 0.3);
 
   const layerVariant = (delay: number) => ({
-    hidden: shouldReduceMotion ? { opacity: 1, pathLength: 1 } : { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { duration: shouldReduceMotion ? 0 : 0.5, delay },
-    },
+    hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: shouldReduceMotion ? 0 : 0.6, delay } },
   });
 
   return (
     <section
-      className="bg-[#080e1c] py-24 px-6 overflow-hidden"
+      className="bg-[#0a0a0b] py-28 px-8 border-t border-white/[0.05]"
       aria-labelledby="see-through-heading"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-          {/* ── Left: Text ─────────────────────────────────────── */}
+          {/* ── Left: Text ──────────────────────────────────────── */}
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
             style={{ willChange: "transform" }}
           >
-            <p className="font-mono text-[#22d3ee] text-xs tracking-widest mb-4">
-              // X-RAY VIEW
+            <p className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-4">
+              X-ray view
             </p>
             <h2
               id="see-through-heading"
-              className="text-3xl sm:text-4xl font-bold text-white mb-6 leading-tight"
+              className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight tracking-tight"
             >
-              See Everything{" "}
-              <span className="text-[#22d3ee]">Behind the Walls</span>
+              See everything behind the walls.
             </h2>
-            <p className="text-[#94a3b8] text-base leading-relaxed mb-8">
+            <p className="text-[#6b6b6b] text-base leading-relaxed mb-8 max-w-md">
               Our millimeter-accurate LiDAR scans capture the exact position of
               every system before drywall goes up — so any future contractor can
               work with precision, not guesswork.
             </p>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3.5">
               {[
-                "Exact pipe and wire locations — no more guessing where to cut",
+                "Exact pipe and wire locations — no guessing where to cut",
                 "Every duct run, access panel, and blocking documented",
-                "Shared with contractors via link — no login required",
+                "Share with contractors via link — no login required",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <div
-                    className="w-1.5 h-1.5 rounded-full bg-[#22d3ee] mt-2 shrink-0"
-                    aria-hidden="true"
-                  />
-                  <p className="text-[#94a3b8] text-sm leading-relaxed">
-                    {item}
-                  </p>
+                  <div className="w-px h-4 bg-white/15 mt-0.5 shrink-0" aria-hidden="true" />
+                  <p className="text-[#6b6b6b] text-sm leading-relaxed">{item}</p>
                 </div>
               ))}
             </div>
-
-            {/* Hover hint */}
-            <p className="font-mono text-[10px] text-[#94a3b8]/50 mt-8 tracking-widest">
-              // HOVER THE WALL TO PEEL BACK DRYWALL →
+            <p className="font-mono text-[9px] text-white/15 mt-10 tracking-[0.2em]">
+              hover illustration to reveal hidden systems
             </p>
           </motion.div>
 
-          {/* ── Right: SVG Wall Illustration ───────────────────── */}
+          {/* ── Right: SVG Wall Illustration ─────────────────────── */}
           <motion.div
             className="relative"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.15 }}
             style={{ willChange: "transform" }}
           >
-            {/* Glow effect behind SVG */}
             <div
-              className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(34,211,238,0.06) 0%, transparent 70%)",
-              }}
-              aria-hidden="true"
-            />
-
-            {/* Wall illustration */}
-            <div
-              className="relative rounded-2xl border border-[#22d3ee]/10 bg-[#0a111f] overflow-hidden cursor-crosshair"
+              className="relative rounded-2xl border border-white/[0.07] bg-[#0d0d0f] overflow-hidden cursor-crosshair"
               onMouseEnter={() => setIsDrywallHovered(true)}
               onMouseLeave={() => setIsDrywallHovered(false)}
               onFocus={() => setIsDrywallHovered(true)}
@@ -153,301 +108,106 @@ export default function SeeThrough() {
               role="img"
               aria-label="Interactive wall cross-section — hover to reveal hidden MEP systems"
             >
-              <svg
-                viewBox="0 0 520 360"
-                className="w-full h-auto"
-                aria-hidden="true"
-              >
-                {/* Background */}
-                <rect width="520" height="360" fill="#080e1c" />
+              <svg viewBox="0 0 520 360" className="w-full h-auto" aria-hidden="true">
+                <rect width="520" height="360" fill="#0d0d0f" />
 
-                {/* ── Layer 1: Framing Studs ──────────────────── */}
+                {/* ── Layer 1: Framing ───────────────────────────── */}
                 <motion.g
-                  variants={layerVariant(getDelay(0))}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
+                  variants={layerVariant(layerDelay(0))}
+                  initial="hidden" whileInView="visible" viewport={{ once: true }}
                 >
-                  {/* Top plate */}
-                  <rect
-                    x="30"
-                    y="20"
-                    width="460"
-                    height="28"
-                    fill="rgba(148,163,184,0.06)"
-                    stroke="#94a3b8"
-                    strokeWidth="1.5"
-                    rx="1"
-                  />
-                  <text x="240" y="38" fontSize="8" textAnchor="middle" fill="#94a3b8" opacity="0.5" fontFamily="var(--font-geist-mono),monospace">
-                    TOP PLATE
-                  </text>
-
-                  {/* Left stud */}
-                  <rect
-                    x="30"
-                    y="48"
-                    width="28"
-                    height="270"
-                    fill="rgba(148,163,184,0.06)"
-                    stroke="#94a3b8"
-                    strokeWidth="1.5"
-                    rx="1"
-                  />
-
-                  {/* Right stud */}
-                  <rect
-                    x="462"
-                    y="48"
-                    width="28"
-                    height="270"
-                    fill="rgba(148,163,184,0.06)"
-                    stroke="#94a3b8"
-                    strokeWidth="1.5"
-                    rx="1"
-                  />
-
-                  {/* Center stud */}
-                  <rect
-                    x="246"
-                    y="48"
-                    width="28"
-                    height="270"
-                    fill="rgba(148,163,184,0.06)"
-                    stroke="#94a3b8"
-                    strokeWidth="1.5"
-                    rx="1"
-                  />
-
-                  {/* Bottom plate */}
-                  <rect
-                    x="30"
-                    y="318"
-                    width="460"
-                    height="28"
-                    fill="rgba(148,163,184,0.06)"
-                    stroke="#94a3b8"
-                    strokeWidth="1.5"
-                    rx="1"
-                  />
-                  <text x="240" y="336" fontSize="8" textAnchor="middle" fill="#94a3b8" opacity="0.5" fontFamily="var(--font-geist-mono),monospace">
-                    BOTTOM PLATE
-                  </text>
+                  <rect x="30" y="20" width="460" height="24" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" rx="1" />
+                  <text x="240" y="36" fontSize="7" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontFamily="var(--font-geist-mono),monospace">TOP PLATE</text>
+                  <rect x="30" y="44" width="26" height="266" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" rx="1" />
+                  <rect x="464" y="44" width="26" height="266" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" rx="1" />
+                  <rect x="247" y="44" width="26" height="266" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" rx="1" />
+                  <rect x="30" y="310" width="460" height="24" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" rx="1" />
+                  <text x="240" y="326" fontSize="7" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontFamily="var(--font-geist-mono),monospace">BOTTOM PLATE</text>
                 </motion.g>
 
-                {/* ── Layer 2: MEP Systems ────────────────────── */}
+                {/* ── Layer 2: MEP Systems ────────────────────────── */}
                 <motion.g
-                  variants={layerVariant(getDelay(1))}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
+                  variants={layerVariant(layerDelay(1))}
+                  initial="hidden" whileInView="visible" viewport={{ once: true }}
                 >
-                  {/* HVAC Duct */}
-                  <rect
-                    x="78"
-                    y="65"
-                    width="160"
-                    height="48"
-                    fill="rgba(34,211,238,0.06)"
-                    stroke="#22d3ee"
-                    strokeWidth="1.5"
-                    rx="2"
-                  />
-                  {/* Duct crosshatch lines */}
-                  <line x1="110" y1="65" x2="110" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-                  <line x1="142" y1="65" x2="142" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-                  <line x1="174" y1="65" x2="174" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-                  <line x1="206" y1="65" x2="206" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-
+                  {/* HVAC Duct — left cavity */}
+                  <rect x="76" y="60" width="155" height="50" fill="rgba(34,211,238,0.04)" stroke="#22d3ee" strokeWidth="1" rx="2" opacity="0.8" />
+                  {[108, 138, 168, 198].map(x => (
+                    <line key={x} x1={x} y1="60" x2={x} y2="110" stroke="#22d3ee" strokeWidth="0.4" opacity="0.2" />
+                  ))}
                   {/* HVAC Duct — right cavity */}
-                  <rect
-                    x="284"
-                    y="65"
-                    width="160"
-                    height="48"
-                    fill="rgba(34,211,238,0.06)"
-                    stroke="#22d3ee"
-                    strokeWidth="1.5"
-                    rx="2"
-                  />
-                  <line x1="316" y1="65" x2="316" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-                  <line x1="348" y1="65" x2="348" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-                  <line x1="380" y1="65" x2="380" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
-                  <line x1="412" y1="65" x2="412" y2="113" stroke="#22d3ee" strokeWidth="0.5" opacity="0.3" />
+                  <rect x="289" y="60" width="155" height="50" fill="rgba(34,211,238,0.04)" stroke="#22d3ee" strokeWidth="1" rx="2" opacity="0.8" />
+                  {[321, 351, 381, 411].map(x => (
+                    <line key={x} x1={x} y1="60" x2={x} y2="110" stroke="#22d3ee" strokeWidth="0.4" opacity="0.2" />
+                  ))}
 
-                  {/* PEX Water Lines — two parallel pipes left cavity */}
-                  {/* Hot line */}
-                  <line
-                    x1="78"
-                    y1="158"
-                    x2="238"
-                    y2="158"
-                    stroke="#22d3ee"
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    opacity="0.9"
-                  />
-                  <line
-                    x1="78"
-                    y1="158"
-                    x2="238"
-                    y2="158"
-                    stroke="#080e1c"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    opacity="0.6"
-                  />
-                  {/* Cold line */}
-                  <line
-                    x1="78"
-                    y1="172"
-                    x2="238"
-                    y2="172"
-                    stroke="#22d3ee"
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    opacity="0.9"
-                  />
-                  <line
-                    x1="78"
-                    y1="172"
-                    x2="238"
-                    y2="172"
-                    stroke="#080e1c"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    opacity="0.6"
-                  />
+                  {/* PEX Water Lines */}
+                  <line x1="76" y1="155" x2="231" y2="155" stroke="#22d3ee" strokeWidth="4.5" strokeLinecap="round" opacity="0.85" />
+                  <line x1="76" y1="155" x2="231" y2="155" stroke="#0d0d0f" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+                  <line x1="76" y1="169" x2="231" y2="169" stroke="#22d3ee" strokeWidth="4.5" strokeLinecap="round" opacity="0.85" />
+                  <line x1="76" y1="169" x2="231" y2="169" stroke="#0d0d0f" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
 
-                  {/* Romex 14/2 Wiring */}
-                  <line
-                    x1="78"
-                    y1="224"
-                    x2="238"
-                    y2="224"
-                    stroke="#22d3ee"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    opacity="0.8"
-                  />
-                  {/* Wire staples */}
-                  <rect x="110" y="220" width="4" height="8" fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.5" rx="0.5" />
-                  <rect x="160" y="220" width="4" height="8" fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.5" rx="0.5" />
-                  <rect x="210" y="220" width="4" height="8" fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.5" rx="0.5" />
-
-                  {/* Romex — right cavity */}
-                  <line
-                    x1="284"
-                    y1="224"
-                    x2="444"
-                    y2="224"
-                    stroke="#22d3ee"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    opacity="0.8"
-                  />
-                  <rect x="316" y="220" width="4" height="8" fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.5" rx="0.5" />
-                  <rect x="366" y="220" width="4" height="8" fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.5" rx="0.5" />
-                  <rect x="416" y="220" width="4" height="8" fill="none" stroke="#22d3ee" strokeWidth="1" opacity="0.5" rx="0.5" />
+                  {/* Romex 14/2 — both cavities */}
+                  <line x1="76" y1="220" x2="231" y2="220" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
+                  {[108, 158, 208].map(x => (
+                    <rect key={x} x={x} y="217" width="3" height="6" fill="none" stroke="#22d3ee" strokeWidth="0.8" opacity="0.4" rx="0.5" />
+                  ))}
+                  <line x1="289" y1="220" x2="444" y2="220" stroke="#22d3ee" strokeWidth="2.5" strokeLinecap="round" opacity="0.7" />
+                  {[321, 371, 421].map(x => (
+                    <rect key={x} x={x} y="217" width="3" height="6" fill="none" stroke="#22d3ee" strokeWidth="0.8" opacity="0.4" rx="0.5" />
+                  ))}
 
                   {/* Blocking 2x6 */}
-                  <rect
-                    x="30"
-                    y="278"
-                    width="460"
-                    height="18"
-                    fill="rgba(148,163,184,0.08)"
-                    stroke="#94a3b8"
-                    strokeWidth="1.5"
-                    strokeDasharray="4 2"
-                    rx="1"
-                  />
+                  <rect x="30" y="272" width="460" height="16" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="4 2" rx="1" />
 
-                  {/* Label callouts */}
-                  <Label x={158} y={89} text="HVAC DUCT" side="right" />
-                  <Label x={78} y={158} text="PEX HOT" side="left" />
-                  <Label x={78} y={172} text="PEX COLD" side="left" />
-                  <Label x={444} y={224} text="14/2 ROMEX" side="right" />
-                  <Label x={490} y={287} text="BLOCKING: 2x6" side="right" />
+                  {/* Labels */}
+                  <Label x={158} y={85} text="HVAC DUCT" side="right" />
+                  <Label x={76} y={155} text="PEX HOT" side="left" />
+                  <Label x={76} y={169} text="PEX COLD" side="left" />
+                  <Label x={444} y={220} text="14/2 ROMEX" side="right" />
+                  <Label x={490} y={280} text="BLOCKING: 2×6" side="right" />
                 </motion.g>
 
-                {/* ── Layer 3: Drywall Overlay ─────────────────── */}
+                {/* ── Layer 3: Drywall Overlay ─────────────────────── */}
                 <motion.g
-                  animate={{
-                    opacity: isDrywallHovered
-                      ? 0
-                      : shouldReduceMotion
-                      ? 0.18
-                      : undefined,
+                  animate={{ opacity: isDrywallHovered ? 0 : (shouldReduceMotion ? 0.14 : undefined) }}
+                  variants={shouldReduceMotion ? undefined : {
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 0.14, transition: { duration: 0.8, delay: layerDelay(2) } },
                   }}
-                  variants={
-                    shouldReduceMotion
-                      ? undefined
-                      : {
-                          hidden: { opacity: 0 },
-                          visible: {
-                            opacity: 0.18,
-                            transition: { duration: 0.7, delay: getDelay(2) },
-                          },
-                        }
-                  }
-                  initial={shouldReduceMotion ? { opacity: 0.18 } : "hidden"}
+                  initial={shouldReduceMotion ? { opacity: 0.14 } : "hidden"}
                   whileInView={shouldReduceMotion ? undefined : "visible"}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
                   style={{ willChange: "opacity" }}
                 >
-                  <rect
-                    x="30"
-                    y="20"
-                    width="460"
-                    height="326"
-                    fill="#94a3b8"
-                    rx="2"
-                  />
-                  {/* Drywall texture lines */}
-                  <line x1="30" y1="183" x2="490" y2="183" stroke="#0f172a" strokeWidth="1" opacity="0.3" />
-                  <text
-                    x="240"
-                    y="178"
-                    fontSize="9"
-                    textAnchor="middle"
-                    fill="#0f172a"
-                    opacity="0.4"
-                    fontFamily="var(--font-geist-mono),monospace"
-                  >
-                    ½" DRYWALL
-                  </text>
+                  <rect x="30" y="20" width="460" height="314" fill="#8a8a8a" rx="1" />
+                  <line x1="30" y1="177" x2="490" y2="177" stroke="#0d0d0f" strokeWidth="0.5" opacity="0.5" />
+                  <text x="240" y="172" fontSize="8" textAnchor="middle" fill="#0d0d0f" opacity="0.35" fontFamily="var(--font-geist-mono),monospace">½″ DRYWALL</text>
                 </motion.g>
 
-                {/* Hover prompt */}
+                {/* Hover hint */}
                 <motion.text
-                  x="240"
-                  y="350"
-                  fontSize="8"
-                  textAnchor="middle"
-                  fill="#22d3ee"
-                  opacity="0.4"
+                  x="240" y="350" fontSize="7.5" textAnchor="middle"
+                  fill="rgba(255,255,255,0.15)"
                   fontFamily="var(--font-geist-mono),monospace"
-                  animate={{ opacity: isDrywallHovered ? 0 : 0.4 }}
-                  transition={{ duration: 0.3 }}
+                  animate={{ opacity: isDrywallHovered ? 0 : 1 }}
+                  transition={{ duration: 0.25 }}
                 >
-                  HOVER TO REVEAL →
+                  HOVER TO REVEAL SYSTEMS
                 </motion.text>
               </svg>
             </div>
 
-            {/* Scan indicator */}
-            <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-[#0f172a]/90 border border-[#22d3ee]/20 rounded px-2.5 py-1.5">
+            {/* Status badge */}
+            <div className="absolute top-4 right-4 flex items-center gap-2 bg-[#0a0a0b]/90 border border-white/[0.08] rounded px-2.5 py-1.5">
               <motion.div
                 className="w-1.5 h-1.5 rounded-full bg-[#22d3ee]"
                 animate={shouldReduceMotion ? {} : { opacity: [1, 0.3, 1] }}
-                transition={{ duration: 1.8, repeat: Infinity }}
+                transition={{ duration: 2, repeat: Infinity }}
                 aria-hidden="true"
               />
-              <span className="font-mono text-[9px] text-[#22d3ee] tracking-widest">
-                SCAN ACTIVE
-              </span>
+              <span className="font-mono text-[8px] text-white/30 tracking-widest">SCAN ACTIVE</span>
             </div>
           </motion.div>
         </div>

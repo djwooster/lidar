@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-// Corner bracket reticle — four L-shaped brackets that converge inward on load
 function ReticleCorner({
   position,
   delay,
@@ -15,65 +14,23 @@ function ReticleCorner({
 }) {
   const isLeft = position === "tl" || position === "bl";
   const isTop = position === "tl" || position === "tr";
-  const size = 28;
-  const thickness = 2;
-
-  const positionClasses = {
-    tl: "top-0 left-0",
-    tr: "top-0 right-0",
-    bl: "bottom-0 left-0",
-    br: "bottom-0 right-0",
-  }[position];
-
-  const initialOffset = reduced ? 0 : 16;
+  const size = 20;
+  const thickness = 1.5;
+  const arm = size * 0.6;
 
   return (
     <motion.div
-      className={`absolute ${positionClasses}`}
+      className={`absolute ${
+        isTop ? "top-0" : "bottom-0"
+      } ${isLeft ? "left-0" : "right-0"}`}
       style={{ willChange: "transform" }}
-      initial={
-        reduced
-          ? { opacity: 1, x: 0, y: 0 }
-          : {
-              opacity: 0,
-              x: isLeft ? -initialOffset : initialOffset,
-              y: isTop ? -initialOffset : initialOffset,
-            }
-      }
-      animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={
-        reduced
-          ? { duration: 0 }
-          : {
-              duration: 0.7,
-              delay,
-              ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-            }
-      }
+      initial={reduced ? { opacity: 0.4 } : { opacity: 0, x: isLeft ? -8 : 8, y: isTop ? -8 : 8 }}
+      animate={{ opacity: 0.4, x: 0, y: 0 }}
+      transition={reduced ? { duration: 0 } : { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox={`0 0 ${size} ${size}`}
-        fill="none"
-        aria-hidden="true"
-      >
-        {/* Horizontal arm */}
-        <rect
-          x={isLeft ? 0 : size - size * 0.55}
-          y={isTop ? 0 : size - thickness}
-          width={size * 0.55}
-          height={thickness}
-          fill="#22d3ee"
-        />
-        {/* Vertical arm */}
-        <rect
-          x={isLeft ? 0 : size - thickness}
-          y={isTop ? 0 : size - size * 0.55}
-          width={thickness}
-          height={size * 0.55}
-          fill="#22d3ee"
-        />
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden="true">
+        <rect x={isLeft ? 0 : size - arm} y={isTop ? 0 : size - thickness} width={arm} height={thickness} fill="white" />
+        <rect x={isLeft ? 0 : size - thickness} y={isTop ? 0 : size - arm} width={thickness} height={arm} fill="white" />
       </svg>
     </motion.div>
   );
@@ -84,170 +41,145 @@ export default function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // autoplay blocked — silent fail
-      });
-    }
+    videoRef.current?.play().catch(() => {});
   }, []);
+
+  const stagger = (i: number) => (shouldReduceMotion ? { duration: 0 } : { duration: 0.7, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] });
 
   return (
     <section
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#0f172a]"
-      aria-label="Hero — Blueprint LiDAR pre-drywall scanning service"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#0a0a0b]"
+      aria-label="Hero — Blueprint LiDAR pre-drywall scanning"
     >
-      {/* ── Video background ────────────────────────────────────── */}
-      {/* DROP KLING VIDEO FILE HERE: /public/videos/hero-scan.mp4  */}
+      {/* ── Video background ─────────────────────────────────────────────── */}
+      {/* DROP KLING VIDEO FILE: /public/videos/hero-scan.mp4              */}
       <video
         ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="none"
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
+        autoPlay muted loop playsInline preload="none"
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.18]"
         aria-hidden="true"
       >
         <source src="/videos/hero-scan.mp4" type="video/mp4" />
       </video>
 
-      {/* Radial gradient overlay — fades video to #0f172a on all edges */}
+      {/* Edge vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 20%, #0f172a 75%)",
-        }}
+        style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, #0a0a0b 85%)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "linear-gradient(to bottom, #0a0a0b 0%, transparent 12%, transparent 88%, #0a0a0b 100%)" }}
         aria-hidden="true"
       />
 
-      {/* Edge fade reinforcement */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(to bottom, #0f172a 0%, transparent 15%, transparent 85%, #0f172a 100%)",
-        }}
-        aria-hidden="true"
-      />
+      {/* ── Content ──────────────────────────────────────────────────────── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-8 w-full pt-32 pb-24">
+        <div className="max-w-3xl">
 
-      {/* ── Content ─────────────────────────────────────────────── */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center gap-6">
+          {/* Eyebrow */}
+          <motion.p
+            className="font-mono text-[10px] text-white/25 tracking-[0.22em] uppercase mb-8"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={stagger(0)}
+          >
+            Pre-Drywall Scanning Service
+          </motion.p>
 
-        {/* Reticle brackets around the content block */}
-        <div className="absolute inset-[-24px] pointer-events-none" aria-hidden="true">
-          <ReticleCorner position="tl" delay={0.2} reduced={shouldReduceMotion} />
-          <ReticleCorner position="tr" delay={0.25} reduced={shouldReduceMotion} />
-          <ReticleCorner position="bl" delay={0.3} reduced={shouldReduceMotion} />
-          <ReticleCorner position="br" delay={0.35} reduced={shouldReduceMotion} />
+          {/* Headline */}
+          <motion.h1
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.04] tracking-tight mb-7"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={stagger(1)}
+            style={{ willChange: "transform" }}
+          >
+            Your walls close once.{" "}
+            <span className="text-white/40">Capture everything before they do.</span>
+          </motion.h1>
 
-          {/* Pulse ring after brackets settle */}
-          {!shouldReduceMotion && (
-            <motion.div
-              className="absolute inset-0 border border-[#22d3ee]/20 rounded-sm"
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: [0, 0.6, 0], scale: [1.05, 1.0, 0.98] }}
-              transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
-              style={{ willChange: "transform, opacity" }}
-              aria-hidden="true"
-            />
-          )}
+          {/* Subheadline */}
+          <motion.p
+            className="text-[#6b6b6b] text-lg sm:text-xl leading-relaxed mb-10 max-w-xl"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={stagger(2)}
+            style={{ willChange: "transform" }}
+          >
+            We scan your home during framing to create a permanent digital record
+            of every pipe, wire, and duct — accessible forever.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-start gap-4"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={stagger(3)}
+            style={{ willChange: "transform" }}
+          >
+            <a
+              href="#book"
+              className="inline-flex items-center justify-center px-7 py-3.5 bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-sm rounded-lg transition-all duration-150 hover:scale-[1.02] active:scale-[0.98]"
+              aria-label="Book your pre-drywall scan"
+            >
+              Book Your Pre-Drywall Scan
+            </a>
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center justify-center px-7 py-3.5 border border-white/10 hover:border-white/20 text-white/50 hover:text-white/80 font-semibold text-sm rounded-lg transition-all duration-150"
+              aria-label="See how Blueprint LiDAR works"
+            >
+              See How It Works
+            </a>
+          </motion.div>
         </div>
 
-        {/* Eyebrow */}
-        <motion.p
-          className="font-mono text-[#22d3ee] text-xs tracking-widest uppercase"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: 0.5 }}
-          style={{ willChange: "transform" }}
+        {/* Corner reticle — positioned top-right of the content block */}
+        <div
+          className="absolute top-32 right-8 w-40 h-40 pointer-events-none hidden lg:block"
+          aria-hidden="true"
         >
-          // PRE-DRYWALL SCANNING SERVICE
-        </motion.p>
+          <ReticleCorner position="tl" delay={0.8} reduced={shouldReduceMotion} />
+          <ReticleCorner position="tr" delay={0.85} reduced={shouldReduceMotion} />
+          <ReticleCorner position="bl" delay={0.9} reduced={shouldReduceMotion} />
+          <ReticleCorner position="br" delay={0.95} reduced={shouldReduceMotion} />
 
-        {/* Headline */}
-        <motion.h1
-          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight tracking-tight"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.65, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-          style={{ willChange: "transform" }}
-        >
-          Your Walls Close Once.
-          <br />
-          <span className="text-[#f97316]">Capture Everything</span> Before They Do.
-        </motion.h1>
-
-        {/* Subheadline */}
-        <motion.p
-          className="text-[#94a3b8] text-lg sm:text-xl max-w-2xl leading-relaxed"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.8 }}
-          style={{ willChange: "transform" }}
-        >
-          We scan your home during framing to create a permanent digital record
-          of every pipe, wire, and duct — accessible forever.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 mt-4"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.95 }}
-          style={{ willChange: "transform" }}
-        >
-          <a
-            href="#book"
-            className="inline-flex items-center justify-center px-8 py-4 bg-[#f97316] hover:bg-[#ea6c0a] text-white font-bold text-base rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#f97316] focus-visible:outline-offset-2"
-            aria-label="Book your pre-drywall scan"
-          >
-            Book Your Pre-Drywall Scan
-          </a>
-          <a
-            href="#how-it-works"
-            className="inline-flex items-center justify-center px-8 py-4 border border-[#94a3b8]/40 hover:border-[#22d3ee]/60 text-[#94a3b8] hover:text-[#22d3ee] font-semibold text-base rounded-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[#22d3ee] focus-visible:outline-offset-2"
-            aria-label="See how Blueprint LiDAR works"
-          >
-            See How It Works
-          </a>
-        </motion.div>
-
-        {/* Scanning indicator */}
-        <motion.div
-          className="flex items-center gap-2 mt-6"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: 1.3 }}
-        >
+          {/* Scan indicator */}
           <motion.div
-            className="w-2 h-2 rounded-full bg-[#f97316]"
-            animate={shouldReduceMotion ? {} : { opacity: [1, 0.2, 1] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            aria-hidden="true"
-          />
-          <span className="font-mono text-[10px] text-[#94a3b8] tracking-widest uppercase">
-            // SCAN READY
-          </span>
-        </motion.div>
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.2, duration: 0.5 }}
+          >
+            <motion.div
+              className="w-1.5 h-1.5 rounded-full bg-[#f97316]"
+              animate={shouldReduceMotion ? {} : { opacity: [1, 0.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              aria-hidden="true"
+            />
+            <span className="font-mono text-[8px] text-white/20 tracking-widest">REC</span>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll cue */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-8 flex items-center gap-3"
         initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.5, duration: 0.5 }}
+        transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.4, duration: 0.5 }}
         aria-hidden="true"
       >
-        <span className="font-mono text-[10px] text-[#94a3b8]/50 tracking-widest">SCROLL</span>
         <motion.div
-          className="w-px h-8 bg-gradient-to-b from-[#94a3b8]/30 to-transparent"
-          animate={shouldReduceMotion ? {} : { scaleY: [0.4, 1, 0.4], opacity: [0.3, 0.8, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          style={{ willChange: "transform" }}
+          className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent"
+          animate={shouldReduceMotion ? {} : { scaleY: [0.3, 1, 0.3], opacity: [0.2, 0.5, 0.2] }}
+          transition={{ duration: 2.5, repeat: Infinity }}
+          style={{ willChange: "transform", transformOrigin: "top" }}
         />
+        <span className="font-mono text-[9px] text-white/20 tracking-[0.2em]">SCROLL</span>
       </motion.div>
     </section>
   );
