@@ -55,22 +55,23 @@ export default function HeroSection() {
       {/* DROP KLING VIDEO FILE: /public/videos/hero-scan.mp4              */}
       <video
         ref={videoRef}
-        autoPlay muted loop playsInline preload="none"
-        className="absolute inset-0 w-full h-full object-cover opacity-[0.18]"
+        autoPlay muted loop playsInline preload="auto"
+        className="absolute inset-0 w-full h-full object-cover"
         aria-hidden="true"
       >
-        <source src="/videos/hero-scan.mp4" type="video/mp4" />
+        <source src="/videos/hero-video.mov" type="video/mp4" />
       </video>
 
-      {/* Edge vignette */}
+      {/* Radial vignette — fades video into page bg on all four edges */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, #0a0a0b 85%)" }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, #0a0a0b 0%, transparent 12%, transparent 88%, #0a0a0b 100%)" }}
+        style={{
+          background: `
+            radial-gradient(ellipse 75% 65% at 50% 50%, transparent 25%, #0a0a0b 80%),
+            linear-gradient(to bottom, #0a0a0b 0%, transparent 18%, transparent 82%, #0a0a0b 100%),
+            linear-gradient(to right,  #0a0a0b 0%, transparent 12%, transparent 88%, #0a0a0b 100%)
+          `,
+        }}
         aria-hidden="true"
       />
 
