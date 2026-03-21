@@ -48,11 +48,11 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#0a0a0b]"
+      className="relative overflow-hidden bg-[#0a0a0b]"
+      style={{ minHeight: "140vh" }}
       aria-label="Hero — Blueprint LiDAR pre-drywall scanning"
     >
-      {/* ── Video background ─────────────────────────────────────────────── */}
-      {/* DROP KLING VIDEO FILE: /public/videos/hero-scan.mp4              */}
+      {/* ── Video — fills the full section, extends below the fold ─────── */}
       <video
         ref={videoRef}
         autoPlay muted loop playsInline preload="auto"
@@ -62,26 +62,30 @@ export default function HeroSection() {
         <source src="/videos/hero-video.mov" type="video/mp4" />
       </video>
 
-      {/* Radial vignette — fades video into page bg on all four edges */}
+      {/* Gradient system:
+          1. Heavy dark wash across the top — keeps text readable
+          2. Left-edge fade — anchors text to the dark left margin
+          3. Bottom fade — dissolves video seamlessly into the next section
+          4. Narrow right-edge softener
+      */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 75% 65% at 50% 50%, transparent 25%, #0a0a0b 80%),
-            linear-gradient(to bottom, #0a0a0b 0%, transparent 18%, transparent 82%, #0a0a0b 100%),
-            linear-gradient(to right,  #0a0a0b 0%, transparent 12%, transparent 88%, #0a0a0b 100%)
+            linear-gradient(to bottom, #0a0a0b 0%, rgba(10,10,11,0.90) 15%, rgba(10,10,11,0.55) 35%, rgba(10,10,11,0.15) 58%, rgba(10,10,11,0.55) 82%, #0a0a0b 100%),
+            linear-gradient(to right,  rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.40) 30%, transparent 60%)
           `,
         }}
         aria-hidden="true"
       />
 
-      {/* ── Content ──────────────────────────────────────────────────────── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-8 w-full pt-32 pb-24">
-        <div className="max-w-3xl">
+      {/* ── Text content — top of section, generous padding ───────────── */}
+      <div className="relative z-10 max-w-7xl mx-auto px-8 w-full pt-36 sm:pt-44">
+        <div className="max-w-2xl">
 
           {/* Eyebrow */}
           <motion.p
-            className="font-mono text-[10px] text-white/25 tracking-[0.22em] uppercase mb-8"
+            className="font-mono text-[10px] text-white/30 tracking-[0.22em] uppercase mb-7"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={stagger(0)}
@@ -89,22 +93,23 @@ export default function HeroSection() {
             Pre-Drywall Scanning Service
           </motion.p>
 
-          {/* Headline */}
+          {/* Headline — semibold, two natural lines, slightly reduced size */}
           <motion.h1
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.04] tracking-tight mb-7"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            className="text-4xl sm:text-5xl lg:text-[56px] font-semibold text-white leading-[1.08] tracking-tight mb-6"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={stagger(1)}
             style={{ willChange: "transform" }}
           >
-            Your walls close once.{" "}
-            <span className="text-white/40">Capture everything before they do.</span>
+            Your walls close once.
+            <br />
+            <span className="text-white/45">Capture everything before they do.</span>
           </motion.h1>
 
           {/* Subheadline */}
           <motion.p
-            className="text-[#6b6b6b] text-lg sm:text-xl leading-relaxed mb-10 max-w-xl"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
+            className="text-[#6b6b6b] text-base sm:text-lg leading-relaxed mb-9 max-w-md"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={stagger(2)}
             style={{ willChange: "transform" }}
@@ -115,8 +120,8 @@ export default function HeroSection() {
 
           {/* CTAs */}
           <motion.div
-            className="flex flex-col sm:flex-row items-start gap-4"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+            className="flex flex-col sm:flex-row items-start gap-3"
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={stagger(3)}
             style={{ willChange: "transform" }}
@@ -138,19 +143,17 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Corner reticle — positioned top-right of the content block */}
+        {/* Reticle — top-right corner detail */}
         <div
-          className="absolute top-32 right-8 w-40 h-40 pointer-events-none hidden lg:block"
+          className="absolute top-36 right-8 w-32 h-32 pointer-events-none hidden lg:block"
           aria-hidden="true"
         >
           <ReticleCorner position="tl" delay={0.8} reduced={shouldReduceMotion} />
           <ReticleCorner position="tr" delay={0.85} reduced={shouldReduceMotion} />
           <ReticleCorner position="bl" delay={0.9} reduced={shouldReduceMotion} />
           <ReticleCorner position="br" delay={0.95} reduced={shouldReduceMotion} />
-
-          {/* Scan indicator */}
           <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.2, duration: 0.5 }}
@@ -168,7 +171,7 @@ export default function HeroSection() {
 
       {/* Scroll cue */}
       <motion.div
-        className="absolute bottom-8 left-8 flex items-center gap-3"
+        className="absolute bottom-12 left-8 flex items-center gap-3"
         initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.4, duration: 0.5 }}
