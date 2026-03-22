@@ -54,7 +54,7 @@ export default function HeroSection() {
     >
       {/* ── Text block — pure dark background, no video behind it ─────── */}
       <div className="max-w-7xl mx-auto px-8 pt-36 sm:pt-44 pb-12 relative">
-        <div className="max-w-2xl">
+        <div className="max-w-[780px]">
 
           {/* Eyebrow */}
           <motion.p
@@ -68,7 +68,7 @@ export default function HeroSection() {
 
           {/* Headline */}
           <motion.h1
-            className="text-4xl sm:text-5xl lg:text-[56px] font-semibold text-white leading-[1.08] tracking-tight mb-6"
+            className="text-[36px] sm:text-[42px] font-medium text-white leading-[1.08] tracking-tight mb-6"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={stagger(1)}
@@ -151,21 +151,30 @@ export default function HeroSection() {
         style={{ willChange: "transform" }}
         aria-hidden="true"
       >
+        {/* aspect-video preserves the full frame — no content is cropped */}
         <video
           ref={videoRef}
           autoPlay muted loop playsInline preload="auto"
-          className="w-full object-cover object-center"
-          style={{ height: "62vh" }}
+          className="w-full aspect-video object-cover"
         >
           <source src="/videos/hero-video.mov" type="video/mp4" />
         </video>
 
-        {/* Bottom gradient — fades video into the page background */}
+        {/* Top gradient — blends video seamlessly into the dark background above */}
+        <div
+          className="absolute top-0 left-0 right-0 pointer-events-none"
+          style={{
+            height: "28%",
+            background: "linear-gradient(to bottom, #0a0a0b 0%, transparent 100%)",
+          }}
+        />
+
+        {/* Bottom gradient — fades into the next section */}
         <div
           className="absolute bottom-0 left-0 right-0 pointer-events-none"
           style={{
-            height: "45%",
-            background: "linear-gradient(to bottom, transparent 0%, rgba(10,10,11,0.6) 60%, #0a0a0b 100%)",
+            height: "30%",
+            background: "linear-gradient(to bottom, transparent 0%, rgba(10,10,11,0.7) 70%, #0a0a0b 100%)",
           }}
         />
 
