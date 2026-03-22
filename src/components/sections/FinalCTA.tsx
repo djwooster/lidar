@@ -40,7 +40,7 @@ export default function FinalCTA() {
 
           <motion.h2
             id="final-cta-heading"
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.04] tracking-tight mb-6"
+            className="text-[36px] sm:text-[42px] font-medium text-white leading-[1.08] tracking-tight mb-6"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -75,13 +75,8 @@ export default function FinalCTA() {
               className="inline-flex items-center justify-center px-8 py-4 bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-base rounded-lg transition-all duration-150 hover:scale-[1.01] active:scale-[0.99]"
               aria-label="Book your pre-drywall scan"
             >
-              Book Your Pre-Drywall Scan
+              Book Your Scan
             </a>
-
-            <p className="font-mono text-[10px] text-white/15 tracking-[0.15em] self-center sm:self-auto sm:mt-1">
-              no commitment required ·{" "}
-              scan within 48h of booking
-            </p>
           </motion.div>
 
           {/* Trust row */}

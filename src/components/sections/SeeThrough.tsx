@@ -63,7 +63,7 @@ export default function SeeThrough() {
             </p>
             <h2
               id="see-through-heading"
-              className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight tracking-tight"
+              className="text-[36px] sm:text-[42px] font-medium text-white mb-6 leading-[1.08] tracking-tight"
             >
               See everything behind the walls.
             </h2>

@@ -104,7 +104,7 @@ export default function HeroSection() {
               className="inline-flex items-center justify-center px-7 py-3.5 bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-sm rounded-lg transition-all duration-150 hover:scale-[1.02] active:scale-[0.98]"
               aria-label="Book your pre-drywall scan"
             >
-              Book Your Pre-Drywall Scan
+              Book Your Scan
             </a>
             <a
               href="#how-it-works"

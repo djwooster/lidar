@@ -108,7 +108,7 @@ export default function FAQSection() {
             </p>
             <h2
               id="faq-heading"
-              className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight"
+              className="text-[36px] sm:text-[42px] font-medium text-white tracking-tight leading-[1.08]"
             >
               Questions before you book.
             </h2>

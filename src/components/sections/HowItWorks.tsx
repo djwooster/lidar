@@ -51,7 +51,7 @@ export default function HowItWorks() {
           </p>
           <h2
             id="how-it-works-heading"
-            className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight max-w-lg"
+            className="text-[36px] sm:text-[42px] font-medium text-white tracking-tight leading-[1.08] max-w-lg"
           >
             How It Works
           </h2>
