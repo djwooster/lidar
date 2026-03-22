@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { fadeIn, fadeUp } from "@/lib/motion";
 
 export default function FinalCTA() {
   const shouldReduceMotion = useReducedMotion() ?? false;
@@ -30,10 +31,7 @@ export default function FinalCTA() {
 
           <motion.p
             className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-6"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5 }}
+            {...fadeIn(shouldReduceMotion)}
           >
             Book your scan
           </motion.p>
@@ -53,22 +51,14 @@ export default function FinalCTA() {
 
           <motion.p
             className="text-[#6b6b6b] text-lg leading-relaxed mb-10"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
-            style={{ willChange: "transform" }}
+            {...fadeUp(shouldReduceMotion, 0.1)}
           >
             Book before drywall goes up. It&apos;s the only chance you&apos;ll get.
           </motion.p>
 
           <motion.div
             className="flex flex-col sm:flex-row items-start gap-5"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
-            style={{ willChange: "transform" }}
+            {...fadeUp(shouldReduceMotion, 0.2)}
           >
             <a
               href="mailto:hello@blueprintlidar.com"
@@ -82,10 +72,7 @@ export default function FinalCTA() {
           {/* Trust row */}
           <motion.div
             className="flex flex-wrap gap-x-8 gap-y-2 mt-12"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: 0.35 }}
+            {...fadeIn(shouldReduceMotion, 0.35)}
           >
             {["±1mm accuracy", "48-hour delivery", "lifetime cloud storage", "shareable with contractors"].map((badge) => (
               <div key={badge} className="flex items-center gap-2">

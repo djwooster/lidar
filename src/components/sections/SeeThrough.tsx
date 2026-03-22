@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useReducedMotion, useInView } from "framer-motion";
+import { fadeUp } from "@/lib/motion";
 
 function Label({
   x, y, text, side = "right",
@@ -54,13 +55,7 @@ export default function SeeThrough() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
           {/* ── Left: Text ──────────────────────────────────────── */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
-            style={{ willChange: "transform" }}
-          >
+          <motion.div {...fadeUp(shouldReduceMotion)}>
             <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
               X-ray view
             </p>
@@ -93,14 +88,7 @@ export default function SeeThrough() {
           </motion.div>
 
           {/* ── Right: SVG Wall Illustration ─────────────────────── */}
-          <motion.div
-            className="relative"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.15 }}
-            style={{ willChange: "transform" }}
-          >
+          <motion.div className="relative" {...fadeUp(shouldReduceMotion, 0.15)}>
             <div
               ref={svgRef}
               className="relative rounded-2xl border border-white/[0.07] bg-[#0d0d0f] overflow-hidden cursor-crosshair"

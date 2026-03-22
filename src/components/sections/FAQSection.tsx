@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { fadeUp } from "@/lib/motion";
 import { Plus, Minus } from "lucide-react";
 
 const faqs = [
@@ -96,13 +97,7 @@ export default function FAQSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-16 lg:gap-24">
 
           {/* Left column: heading (sticky on desktop) */}
-          <motion.div
-            className="lg:pt-1"
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
-          >
+          <motion.div className="lg:pt-1" {...fadeUp(shouldReduceMotion)}>
             <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
               FAQ
             </p>
@@ -122,12 +117,7 @@ export default function FAQSection() {
           </motion.div>
 
           {/* Right column: accordion */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.1 }}
-          >
+          <motion.div {...fadeUp(shouldReduceMotion, 0.1)}>
             <div className="border-t border-white/[0.05]">
               {faqs.map((faq) => (
                 <FAQItem

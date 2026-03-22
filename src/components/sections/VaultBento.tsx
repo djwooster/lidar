@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useInView, animate } from "framer-motion";
+import { fadeUp } from "@/lib/motion";
 import { ScanLine, LayoutDashboard, HardHat, CalendarX2, Cloud, RefreshCw } from "lucide-react";
 
 function MeasurementCounter({ inView }: { inView: boolean }) {
@@ -89,11 +90,6 @@ export default function VaultBento() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
-  const fadeUp = (delay: number) =>
-    shouldReduceMotion
-      ? { initial: { opacity: 1 }, whileInView: { opacity: 1 }, transition: { duration: 0 } }
-      : { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay } };
-
   return (
     <section
       ref={sectionRef}
@@ -103,13 +99,7 @@ export default function VaultBento() {
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <motion.div
-          className="mb-14"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
+        <motion.div className="mb-14" {...fadeUp(shouldReduceMotion)}>
           <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
             The Vault
           </p>
@@ -128,9 +118,7 @@ export default function VaultBento() {
           {/* Card 1 — Precision */}
           <motion.div
             className={cardBase}
-            viewport={{ once: true }}
-            {...fadeUp(0)}
-            style={{ willChange: "transform" }}
+            {...fadeUp(shouldReduceMotion, 0)}
             whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.15 } }}
           >
             <div className="flex items-center gap-3 mb-5">
@@ -153,9 +141,7 @@ export default function VaultBento() {
           {/* Card 2 — Cloud */}
           <motion.div
             className={cardBase}
-            viewport={{ once: true }}
-            {...fadeUp(0.08)}
-            style={{ willChange: "transform" }}
+            {...fadeUp(shouldReduceMotion, 0.08)}
             whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.15 } }}
           >
             <div className="flex items-center gap-3 mb-5">
@@ -183,9 +169,7 @@ export default function VaultBento() {
           {/* Card 3 — Collaboration */}
           <motion.div
             className={cardBase}
-            viewport={{ once: true }}
-            {...fadeUp(0.16)}
-            style={{ willChange: "transform" }}
+            {...fadeUp(shouldReduceMotion, 0.16)}
             whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.15 } }}
           >
             <div className="flex items-center gap-3 mb-5">
@@ -208,9 +192,7 @@ export default function VaultBento() {
           {/* Card 4 — Urgency (only card with orange) */}
           <motion.div
             className="rounded-2xl border border-[#f97316]/12 bg-[#111113] p-7 flex flex-col relative overflow-hidden"
-            viewport={{ once: true }}
-            {...fadeUp(0.24)}
-            style={{ willChange: "transform" }}
+            {...fadeUp(shouldReduceMotion, 0.24)}
             whileHover={shouldReduceMotion ? {} : { y: -2, transition: { duration: 0.15 } }}
           >
             {/* Subtle orange corner glow */}

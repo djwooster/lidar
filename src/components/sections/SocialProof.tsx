@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { fadeUp, fadeIn } from "@/lib/motion";
 
 const logos = [
   { name: "Meridian Homes" },
@@ -21,20 +22,15 @@ export default function SocialProof() {
     >
       <div className="max-w-7xl mx-auto">
 
-        {/* Label — left */}
         <motion.p
           id="social-proof-label"
-          className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-10"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5 }}
+          className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-10"
+          {...fadeIn(shouldReduceMotion)}
         >
           Trusted by builders &amp; homeowners
         </motion.p>
 
-        {/* Logo row — left-aligned */}
-        {/* REPLACE placeholder spans with real <Image> tags and actual logo files */}
+        {/* Logo row — replace spans with <Image> tags once real logo files are available */}
         <div
           className="flex flex-wrap items-center gap-3 mb-20"
           role="list"
@@ -44,14 +40,10 @@ export default function SocialProof() {
             <motion.div
               key={logo.name}
               className="flex items-center justify-center h-9 px-4 rounded-lg bg-[#111113] border border-white/[0.06]"
-              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.35, delay: i * 0.05 }}
+              {...fadeIn(shouldReduceMotion, i * 0.05, 0.35)}
               role="listitem"
               aria-label={logo.name}
             >
-              {/* SWAP: <Image src="/logos/[name].svg" alt={logo.name} width={100} height={28} /> */}
               <span className="font-mono text-[9px] text-white/20 tracking-wider uppercase">
                 {logo.name}
               </span>
@@ -59,14 +51,9 @@ export default function SocialProof() {
           ))}
         </div>
 
-        {/* Pull quote — left-aligned, large */}
         <motion.figure
           className="max-w-4xl"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, delay: 0.15 }}
-          style={{ willChange: "transform" }}
+          {...fadeUp(shouldReduceMotion, 0.15, 0.7)}
         >
           <blockquote>
             <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-snug tracking-tight">
@@ -80,7 +67,6 @@ export default function SocialProof() {
               Marcus T. — General Contractor,{" "}
               <span className="text-white/40">Peak Frame &amp; Finish</span>
             </span>
-            {/* SWAP with real name / company */}
           </figcaption>
         </motion.figure>
 

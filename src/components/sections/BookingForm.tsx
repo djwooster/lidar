@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { fadeUp } from "@/lib/motion";
 import { ScanLine, Clock, Cloud, Share2, CalendarCheck } from "lucide-react";
 
 type FormState = "idle" | "submitting" | "success" | "error";
@@ -77,13 +78,7 @@ export default function BookingForm() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
           {/* ── Left: Form ─────────────────────────────────────── */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
-            style={{ willChange: "transform" }}
-          >
+          <motion.div {...fadeUp(shouldReduceMotion)}>
             <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
               Get in touch
             </p>
@@ -226,13 +221,7 @@ export default function BookingForm() {
           </motion.div>
 
           {/* ── Right: Feature card ────────────────────────────── */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.15 }}
-            style={{ willChange: "transform" }}
-          >
+          <motion.div {...fadeUp(shouldReduceMotion, 0.15)}>
             <div className="rounded-2xl border border-white/[0.07] bg-[#111113] p-8 relative overflow-hidden">
               {/* Subtle top-right glow */}
               <div

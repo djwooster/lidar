@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Calendar, ScanLine, FileCode2 } from "lucide-react";
+import { fadeUp } from "@/lib/motion";
 
 const steps = [
   {
@@ -38,26 +39,19 @@ export default function HowItWorks() {
     >
       <div className="max-w-7xl mx-auto">
 
-        {/* Header — left-aligned */}
-        <motion.div
-          className="mb-16"
-          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
-        >
+        <motion.div className="mb-16" {...fadeUp(shouldReduceMotion)}>
           <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
             Three steps
           </p>
           <h2
             id="how-it-works-heading"
-            className="font-medium text-white tracking-tight leading-[1.08] max-w-lg" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
+            className="font-medium text-white tracking-tight leading-[1.08] max-w-lg"
+            style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
           >
             How It Works
           </h2>
         </motion.div>
 
-        {/* Steps */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden border border-white/[0.06]">
           {steps.map((step, index) => {
             const Icon = step.icon;
@@ -65,28 +59,17 @@ export default function HowItWorks() {
               <motion.div
                 key={step.number}
                 className="bg-[#0a0a0b] p-8 flex flex-col"
-                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1 }}
-                style={{ willChange: "transform" }}
+                {...fadeUp(shouldReduceMotion, index * 0.1)}
               >
-                {/* Step number */}
                 <p className="font-mono text-[10px] text-white/15 tracking-[0.2em] mb-6">
                   {step.number}
                 </p>
-
-                {/* Icon */}
                 <div className="w-9 h-9 rounded-lg border border-white/[0.08] flex items-center justify-center mb-6">
                   <Icon className="w-4 h-4 text-white/50" aria-hidden="true" />
                 </div>
-
-                {/* Title */}
                 <h3 className="text-lg font-semibold text-white mb-3 leading-snug">
                   {step.title}
                 </h3>
-
-                {/* Description */}
                 <p className="text-[#6b6b6b] text-sm leading-relaxed">
                   {step.description}
                 </p>
