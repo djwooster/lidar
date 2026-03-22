@@ -103,7 +103,7 @@ export default function FAQSection() {
             viewport={{ once: true }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
           >
-            <p className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-4">
+            <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
               FAQ
             </p>
             <h2

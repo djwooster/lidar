@@ -29,7 +29,7 @@ export default function FinalCTA() {
         <div className="max-w-2xl">
 
           <motion.p
-            className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-6"
+            className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-6"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

@@ -42,6 +42,7 @@ export default function BookingForm() {
     lastName: "",
     email: "",
     phone: "",
+    address: "",
   });
   const [state, setState] = useState<FormState>("idle");
 
@@ -62,7 +63,9 @@ export default function BookingForm() {
   }
 
   const inputClass =
-    "w-full bg-[#0a0a0b] border border-white/[0.08] rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/20 transition-colors duration-150";
+    "w-full bg-[#0a0a0b] border border-white/[0.18] rounded-lg px-4 py-3 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-white/35 transition-colors duration-150";
+
+  const labelClass = "font-mono text-[9px] text-white/45 tracking-[0.18em] uppercase";
 
   return (
     <section
@@ -81,7 +84,7 @@ export default function BookingForm() {
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
             style={{ willChange: "transform" }}
           >
-            <p className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-4">
+            <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
               Get in touch
             </p>
             <h2
@@ -117,7 +120,7 @@ export default function BookingForm() {
                   {/* Name row */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
-                      <label htmlFor="firstName" className="font-mono text-[9px] text-white/20 tracking-[0.18em] uppercase">
+                      <label htmlFor="firstName" className={labelClass}>
                         First name
                       </label>
                       <input
@@ -133,7 +136,7 @@ export default function BookingForm() {
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label htmlFor="lastName" className="font-mono text-[9px] text-white/20 tracking-[0.18em] uppercase">
+                      <label htmlFor="lastName" className={labelClass}>
                         Last name
                       </label>
                       <input
@@ -152,7 +155,7 @@ export default function BookingForm() {
 
                   {/* Email */}
                   <div className="flex flex-col gap-1.5">
-                    <label htmlFor="email" className="font-mono text-[9px] text-white/20 tracking-[0.18em] uppercase">
+                    <label htmlFor="email" className={labelClass}>
                       Email
                     </label>
                     <input
@@ -170,7 +173,7 @@ export default function BookingForm() {
 
                   {/* Phone */}
                   <div className="flex flex-col gap-1.5">
-                    <label htmlFor="phone" className="font-mono text-[9px] text-white/20 tracking-[0.18em] uppercase">
+                    <label htmlFor="phone" className={labelClass}>
                       Phone
                     </label>
                     <input
@@ -182,6 +185,24 @@ export default function BookingForm() {
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="(555) 000-0000"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Property address */}
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="address" className={labelClass}>
+                      Property address
+                    </label>
+                    <input
+                      id="address"
+                      name="address"
+                      type="text"
+                      autoComplete="street-address"
+                      required
+                      value={form.address}
+                      onChange={handleChange}
+                      placeholder="123 Maple St, Springfield, IL 62701"
                       className={inputClass}
                     />
                   </div>
@@ -220,7 +241,7 @@ export default function BookingForm() {
                 aria-hidden="true"
               />
 
-              <p className="font-mono text-[9px] text-white/20 tracking-[0.2em] uppercase mb-6">
+              <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase mb-6">
                 What you get
               </p>
 

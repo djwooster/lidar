@@ -58,7 +58,7 @@ export default function HeroSection() {
 
           {/* Eyebrow */}
           <motion.p
-            className="font-mono text-[10px] text-white/30 tracking-[0.22em] uppercase mb-7"
+            className="font-mono text-[12px] text-white/40 tracking-[0.22em] uppercase mb-7"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={stagger(0)}

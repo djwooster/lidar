@@ -110,7 +110,7 @@ export default function VaultBento() {
           viewport={{ once: true }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}
         >
-          <p className="font-mono text-[10px] text-white/20 tracking-[0.22em] uppercase mb-4">
+          <p className="font-mono text-[12px] text-white/35 tracking-[0.22em] uppercase mb-4">
             The Vault
           </p>
           <h2
@@ -137,7 +137,7 @@ export default function VaultBento() {
               <div className="w-9 h-9 rounded-lg border border-white/[0.08] flex items-center justify-center">
                 <ScanLine className="w-4 h-4 text-white/40" aria-hidden="true" />
               </div>
-              <p className="font-mono text-[9px] text-white/20 tracking-[0.2em] uppercase">Accuracy</p>
+              <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase">Accuracy</p>
             </div>
             <h3 className="text-xl font-semibold text-white leading-snug">1mm Precision</h3>
             <p className="text-[#6b6b6b] text-sm leading-relaxed mt-2">
@@ -162,7 +162,7 @@ export default function VaultBento() {
               <div className="w-9 h-9 rounded-lg border border-white/[0.08] flex items-center justify-center">
                 <CloudSyncIcon />
               </div>
-              <p className="font-mono text-[9px] text-white/20 tracking-[0.2em] uppercase">Cloud Vault</p>
+              <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase">Cloud Vault</p>
             </div>
             <h3 className="text-xl font-semibold text-white leading-snug">Cloud Access for Life</h3>
             <p className="text-[#6b6b6b] text-sm leading-relaxed mt-2">
@@ -192,7 +192,7 @@ export default function VaultBento() {
               <div className="w-9 h-9 rounded-lg border border-white/[0.08] flex items-center justify-center">
                 <HardHat className="w-4 h-4 text-white/40" aria-hidden="true" />
               </div>
-              <p className="font-mono text-[9px] text-white/20 tracking-[0.2em] uppercase">Collaboration</p>
+              <p className="font-mono text-[11px] text-white/35 tracking-[0.2em] uppercase">Collaboration</p>
             </div>
             <h3 className="text-xl font-semibold text-white leading-snug">Contractor Collaboration</h3>
             <p className="text-[#6b6b6b] text-sm leading-relaxed mt-2">
@@ -224,7 +224,7 @@ export default function VaultBento() {
               <div className="w-9 h-9 rounded-lg border border-[#f97316]/15 flex items-center justify-center">
                 <CalendarX2 className="w-4 h-4 text-[#f97316]/60" aria-hidden="true" />
               </div>
-              <p className="font-mono text-[9px] text-[#f97316]/40 tracking-[0.2em] uppercase">Time-sensitive</p>
+              <p className="font-mono text-[11px] text-[#f97316]/55 tracking-[0.2em] uppercase">Time-sensitive</p>
             </div>
             <h3 className="text-xl font-semibold text-white leading-snug">Pre-Drywall Only Window</h3>
             <p className="text-[#6b6b6b] text-sm leading-relaxed mt-2">

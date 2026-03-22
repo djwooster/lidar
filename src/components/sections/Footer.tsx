@@ -24,7 +24,7 @@ export default function Footer() {
 
           {/* Nav */}
           <nav aria-label="Footer navigation">
-            <p className="font-mono text-[9px] text-white/15 tracking-[0.2em] uppercase mb-4">Navigation</p>
+            <p className="font-mono text-[11px] text-white/30 tracking-[0.2em] uppercase mb-4">Navigation</p>
             <ul className="space-y-2.5">
               {[
                 { label: "How It Works", href: "#how-it-works" },
@@ -43,7 +43,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <p className="font-mono text-[9px] text-white/15 tracking-[0.2em] uppercase mb-4">Contact</p>
+            <p className="font-mono text-[11px] text-white/30 tracking-[0.2em] uppercase mb-4">Contact</p>
             <a
               href="mailto:hello@blueprintlidar.com"
               className="text-[#6b6b6b] hover:text-white/70 text-sm transition-colors duration-150 block"
