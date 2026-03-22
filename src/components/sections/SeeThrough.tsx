@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 
 function Label({
   x, y, text, side = "right",
@@ -40,12 +40,10 @@ export default function SeeThrough() {
     setIsTouchDevice(window.matchMedia("(hover: none)").matches);
   }, []);
 
-  const layerDelay = (i: number) => (shouldReduceMotion ? 0 : i * 0.3);
+  const svgRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(svgRef, { once: true, margin: "-60px" });
 
-  const layerVariant = (delay: number) => ({
-    hidden: shouldReduceMotion ? { opacity: 1 } : { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: shouldReduceMotion ? 0 : 0.6, delay } },
-  });
+  const layerDelay = (i: number) => (shouldReduceMotion ? 0 : i * 0.3);
 
   return (
     <section
@@ -104,6 +102,7 @@ export default function SeeThrough() {
             style={{ willChange: "transform" }}
           >
             <div
+              ref={svgRef}
               className="relative rounded-2xl border border-white/[0.07] bg-[#0d0d0f] overflow-hidden cursor-crosshair"
               onMouseEnter={() => !isTouchDevice && setIsRevealed(true)}
               onMouseLeave={() => !isTouchDevice && setIsRevealed(false)}
@@ -119,8 +118,9 @@ export default function SeeThrough() {
 
                 {/* ── Layer 1: Framing ───────────────────────────── */}
                 <motion.g
-                  variants={layerVariant(layerDelay(0))}
-                  initial="hidden" whileInView="visible" viewport={{ once: true }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isInView ? 1 : 0 }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: layerDelay(0) }}
                 >
                   <rect x="30" y="20" width="460" height="24" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" rx="1" />
                   <text x="240" y="36" fontSize="7" textAnchor="middle" fill="rgba(255,255,255,0.2)" fontFamily="var(--font-geist-mono),monospace">TOP PLATE</text>
@@ -133,8 +133,9 @@ export default function SeeThrough() {
 
                 {/* ── Layer 2: MEP Systems ────────────────────────── */}
                 <motion.g
-                  variants={layerVariant(layerDelay(1))}
-                  initial="hidden" whileInView="visible" viewport={{ once: true }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isInView ? 1 : 0 }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: layerDelay(1) }}
                 >
                   {/* HVAC Duct — left cavity */}
                   <rect x="76" y="60" width="155" height="50" fill="rgba(34,211,238,0.04)" stroke="#22d3ee" strokeWidth="1" rx="2" opacity="0.8" />
@@ -177,7 +178,7 @@ export default function SeeThrough() {
                 {/* ── Layer 3: Drywall Overlay ─────────────────────── */}
                 <motion.g
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: isRevealed ? 0 : 0.14 }}
+                  animate={{ opacity: isRevealed ? 0 : (isInView ? 0.14 : 0) }}
                   transition={shouldReduceMotion ? { duration: 0 } : { duration: isRevealed ? 0.35 : 0.8, delay: isRevealed ? 0 : layerDelay(2), ease: "easeInOut" }}
                   style={{ willChange: "opacity" }}
                 >
