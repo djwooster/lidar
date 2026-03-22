@@ -144,7 +144,7 @@ export default function HeroSection() {
 
       {/* ── Video frame — starts below copy, extends below fold ────────── */}
       <motion.div
-        className="relative mx-6 sm:mx-8 lg:mx-12 overflow-hidden rounded-t-2xl border border-b-0 border-white/[0.08]"
+        className="relative mx-6 sm:mx-8 lg:mx-12 overflow-hidden rounded-t-2xl"
         initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={stagger(4)}
@@ -160,12 +160,12 @@ export default function HeroSection() {
           <source src="/videos/hero-video.mov" type="video/mp4" />
         </video>
 
-        {/* Top gradient — blends video seamlessly into the dark background above */}
+        {/* Top gradient — long, gradual fade from page bg into video */}
         <div
           className="absolute top-0 left-0 right-0 pointer-events-none"
           style={{
-            height: "28%",
-            background: "linear-gradient(to bottom, #0a0a0b 0%, transparent 100%)",
+            height: "55%",
+            background: "linear-gradient(to bottom, #0a0a0b 0%, rgba(10,10,11,0.85) 20%, rgba(10,10,11,0.5) 45%, rgba(10,10,11,0.15) 72%, transparent 100%)",
           }}
         />
 
