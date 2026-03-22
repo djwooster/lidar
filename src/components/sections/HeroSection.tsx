@@ -155,6 +155,7 @@ export default function HeroSection() {
         <video
           ref={videoRef}
           autoPlay muted loop playsInline preload="auto"
+          onCanPlay={() => videoRef.current?.play().catch(() => {})}
           className="w-full aspect-video object-cover"
         >
           <source src="/videos/hero-video.mov" type="video/mp4" />
