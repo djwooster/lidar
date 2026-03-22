@@ -20,9 +20,7 @@ function ReticleCorner({
 
   return (
     <motion.div
-      className={`absolute ${
-        isTop ? "top-0" : "bottom-0"
-      } ${isLeft ? "left-0" : "right-0"}`}
+      className={`absolute ${isTop ? "top-0" : "bottom-0"} ${isLeft ? "left-0" : "right-0"}`}
       style={{ willChange: "transform" }}
       initial={reduced ? { opacity: 0.4 } : { opacity: 0, x: isLeft ? -8 : 8, y: isTop ? -8 : 8 }}
       animate={{ opacity: 0.4, x: 0, y: 0 }}
@@ -44,43 +42,18 @@ export default function HeroSection() {
     videoRef.current?.play().catch(() => {});
   }, []);
 
-  const stagger = (i: number) => (shouldReduceMotion ? { duration: 0 } : { duration: 0.7, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] });
+  const stagger = (i: number) =>
+    shouldReduceMotion
+      ? { duration: 0 }
+      : { duration: 0.7, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] };
 
   return (
     <section
-      className="relative overflow-hidden bg-[#0a0a0b]"
-      style={{ minHeight: "140vh" }}
+      className="bg-[#0a0a0b] pb-0"
       aria-label="Hero — Blueprint LiDAR pre-drywall scanning"
     >
-      {/* ── Video — fills the full section, extends below the fold ─────── */}
-      <video
-        ref={videoRef}
-        autoPlay muted loop playsInline preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
-        aria-hidden="true"
-      >
-        <source src="/videos/hero-video.mov" type="video/mp4" />
-      </video>
-
-      {/* Gradient system:
-          1. Heavy dark wash across the top — keeps text readable
-          2. Left-edge fade — anchors text to the dark left margin
-          3. Bottom fade — dissolves video seamlessly into the next section
-          4. Narrow right-edge softener
-      */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            linear-gradient(to bottom, #0a0a0b 0%, rgba(10,10,11,0.90) 15%, rgba(10,10,11,0.55) 35%, rgba(10,10,11,0.15) 58%, rgba(10,10,11,0.55) 82%, #0a0a0b 100%),
-            linear-gradient(to right,  rgba(10,10,11,0.85) 0%, rgba(10,10,11,0.40) 30%, transparent 60%)
-          `,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ── Text content — top of section, generous padding ───────────── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-8 w-full pt-36 sm:pt-44">
+      {/* ── Text block — pure dark background, no video behind it ─────── */}
+      <div className="max-w-7xl mx-auto px-8 pt-36 sm:pt-44 pb-12 relative">
         <div className="max-w-2xl">
 
           {/* Eyebrow */}
@@ -93,7 +66,7 @@ export default function HeroSection() {
             Pre-Drywall Scanning Service
           </motion.p>
 
-          {/* Headline — semibold, two natural lines, slightly reduced size */}
+          {/* Headline */}
           <motion.h1
             className="text-4xl sm:text-5xl lg:text-[56px] font-semibold text-white leading-[1.08] tracking-tight mb-6"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
@@ -143,9 +116,9 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Reticle — top-right corner detail */}
+        {/* Reticle — ambient top-right detail, aligned with text block */}
         <div
-          className="absolute top-36 right-8 w-32 h-32 pointer-events-none hidden lg:block"
+          className="absolute top-36 sm:top-44 right-8 w-28 h-28 pointer-events-none hidden lg:block"
           aria-hidden="true"
         >
           <ReticleCorner position="tl" delay={0.8} reduced={shouldReduceMotion} />
@@ -169,21 +142,42 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll cue */}
+      {/* ── Video frame — starts below copy, extends below fold ────────── */}
       <motion.div
-        className="absolute bottom-12 left-8 flex items-center gap-3"
-        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.4, duration: 0.5 }}
+        className="relative mx-6 sm:mx-8 lg:mx-12 overflow-hidden rounded-t-2xl border border-b-0 border-white/[0.08]"
+        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={stagger(4)}
+        style={{ willChange: "transform" }}
         aria-hidden="true"
       >
-        <motion.div
-          className="w-px h-10 bg-gradient-to-b from-white/20 to-transparent"
-          animate={shouldReduceMotion ? {} : { scaleY: [0.3, 1, 0.3], opacity: [0.2, 0.5, 0.2] }}
-          transition={{ duration: 2.5, repeat: Infinity }}
-          style={{ willChange: "transform", transformOrigin: "top" }}
+        <video
+          ref={videoRef}
+          autoPlay muted loop playsInline preload="auto"
+          className="w-full object-cover object-center"
+          style={{ height: "62vh" }}
+        >
+          <source src="/videos/hero-video.mov" type="video/mp4" />
+        </video>
+
+        {/* Bottom gradient — fades video into the page background */}
+        <div
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{
+            height: "45%",
+            background: "linear-gradient(to bottom, transparent 0%, rgba(10,10,11,0.6) 60%, #0a0a0b 100%)",
+          }}
         />
-        <span className="font-mono text-[9px] text-white/20 tracking-[0.2em]">SCROLL</span>
+
+        {/* Side fades — softens left/right edges */}
+        <div
+          className="absolute inset-y-0 left-0 w-16 pointer-events-none"
+          style={{ background: "linear-gradient(to right, rgba(10,10,11,0.35), transparent)" }}
+        />
+        <div
+          className="absolute inset-y-0 right-0 w-16 pointer-events-none"
+          style={{ background: "linear-gradient(to left, rgba(10,10,11,0.35), transparent)" }}
+        />
       </motion.div>
     </section>
   );
