@@ -40,7 +40,7 @@ export default function FinalCTA() {
 
           <motion.h2
             id="final-cta-heading"
-            className="text-[36px] sm:text-[42px] font-medium text-white leading-[1.08] tracking-tight mb-6"
+            className="font-medium text-white leading-[1.08] tracking-tight mb-6" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

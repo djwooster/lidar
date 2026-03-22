@@ -6,6 +6,7 @@ import VaultBento from "@/components/sections/VaultBento";
 import SocialProof from "@/components/sections/SocialProof";
 import FAQSection from "@/components/sections/FAQSection";
 import FinalCTA from "@/components/sections/FinalCTA";
+import BookingForm from "@/components/sections/BookingForm";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
       <SocialProof />
       <FAQSection />
       <FinalCTA />
+      <BookingForm />
       <Footer />
     </main>
   );

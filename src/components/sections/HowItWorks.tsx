@@ -51,7 +51,7 @@ export default function HowItWorks() {
           </p>
           <h2
             id="how-it-works-heading"
-            className="text-[36px] sm:text-[42px] font-medium text-white tracking-tight leading-[1.08] max-w-lg"
+            className="font-medium text-white tracking-tight leading-[1.08] max-w-lg" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
           >
             How It Works
           </h2>

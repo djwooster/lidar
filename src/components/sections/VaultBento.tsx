@@ -115,7 +115,7 @@ export default function VaultBento() {
           </p>
           <h2
             id="vault-heading"
-            className="text-[36px] sm:text-[42px] font-medium text-white tracking-tight leading-[1.08] max-w-xl"
+            className="font-medium text-white tracking-tight leading-[1.08] max-w-xl" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
           >
             Everything captured.{" "}
             <span className="text-white/35">Stored forever.</span>

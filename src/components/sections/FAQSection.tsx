@@ -108,7 +108,7 @@ export default function FAQSection() {
             </p>
             <h2
               id="faq-heading"
-              className="text-[36px] sm:text-[42px] font-medium text-white tracking-tight leading-[1.08]"
+              className="font-medium text-white tracking-tight leading-[1.08]" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
             >
               Questions before you book.
             </h2>

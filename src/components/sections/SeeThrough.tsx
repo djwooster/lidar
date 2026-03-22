@@ -66,7 +66,7 @@ export default function SeeThrough() {
             </p>
             <h2
               id="see-through-heading"
-              className="text-[36px] sm:text-[42px] font-medium text-white mb-6 leading-[1.08] tracking-tight"
+              className="font-medium text-white mb-6 leading-[1.08] tracking-tight" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
             >
               See everything behind the walls.
             </h2>
