@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 function Label({
@@ -33,7 +33,12 @@ function Label({
 
 export default function SeeThrough() {
   const shouldReduceMotion = useReducedMotion() ?? false;
-  const [isDrywallHovered, setIsDrywallHovered] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(window.matchMedia("(hover: none)").matches);
+  }, []);
 
   const layerDelay = (i: number) => (shouldReduceMotion ? 0 : i * 0.3);
 
@@ -85,7 +90,7 @@ export default function SeeThrough() {
               ))}
             </div>
             <p className="font-mono text-[9px] text-white/15 mt-10 tracking-[0.2em]">
-              hover illustration to reveal hidden systems
+              {isTouchDevice ? "tap illustration to reveal hidden systems" : "hover illustration to reveal hidden systems"}
             </p>
           </motion.div>
 
@@ -100,13 +105,14 @@ export default function SeeThrough() {
           >
             <div
               className="relative rounded-2xl border border-white/[0.07] bg-[#0d0d0f] overflow-hidden cursor-crosshair"
-              onMouseEnter={() => setIsDrywallHovered(true)}
-              onMouseLeave={() => setIsDrywallHovered(false)}
-              onFocus={() => setIsDrywallHovered(true)}
-              onBlur={() => setIsDrywallHovered(false)}
+              onMouseEnter={() => !isTouchDevice && setIsRevealed(true)}
+              onMouseLeave={() => !isTouchDevice && setIsRevealed(false)}
+              onTouchStart={() => setIsRevealed(v => !v)}
+              onFocus={() => setIsRevealed(true)}
+              onBlur={() => setIsRevealed(false)}
               tabIndex={0}
               role="img"
-              aria-label="Interactive wall cross-section — hover to reveal hidden MEP systems"
+              aria-label="Interactive wall cross-section — tap or hover to reveal hidden MEP systems"
             >
               <svg viewBox="0 0 520 360" className="w-full h-auto" aria-hidden="true">
                 <rect width="520" height="360" fill="#0d0d0f" />
@@ -170,15 +176,9 @@ export default function SeeThrough() {
 
                 {/* ── Layer 3: Drywall Overlay ─────────────────────── */}
                 <motion.g
-                  animate={{ opacity: isDrywallHovered ? 0 : (shouldReduceMotion ? 0.14 : undefined) }}
-                  variants={shouldReduceMotion ? undefined : {
-                    hidden: { opacity: 0 },
-                    visible: { opacity: 0.14, transition: { duration: 0.8, delay: layerDelay(2) } },
-                  }}
-                  initial={shouldReduceMotion ? { opacity: 0.14 } : "hidden"}
-                  whileInView={shouldReduceMotion ? undefined : "visible"}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isRevealed ? 0 : 0.14 }}
+                  transition={shouldReduceMotion ? { duration: 0 } : { duration: isRevealed ? 0.35 : 0.8, delay: isRevealed ? 0 : layerDelay(2), ease: "easeInOut" }}
                   style={{ willChange: "opacity" }}
                 >
                   <rect x="30" y="20" width="460" height="314" fill="#8a8a8a" rx="1" />
@@ -186,15 +186,15 @@ export default function SeeThrough() {
                   <text x="240" y="172" fontSize="8" textAnchor="middle" fill="#0d0d0f" opacity="0.35" fontFamily="var(--font-geist-mono),monospace">½″ DRYWALL</text>
                 </motion.g>
 
-                {/* Hover hint */}
+                {/* Hover/tap hint */}
                 <motion.text
                   x="240" y="350" fontSize="7.5" textAnchor="middle"
                   fill="rgba(255,255,255,0.15)"
                   fontFamily="var(--font-geist-mono),monospace"
-                  animate={{ opacity: isDrywallHovered ? 0 : 1 }}
+                  animate={{ opacity: isRevealed ? 0 : 1 }}
                   transition={{ duration: 0.25 }}
                 >
-                  HOVER TO REVEAL SYSTEMS
+                  {isTouchDevice ? "TAP TO REVEAL SYSTEMS" : "HOVER TO REVEAL SYSTEMS"}
                 </motion.text>
               </svg>
             </div>
