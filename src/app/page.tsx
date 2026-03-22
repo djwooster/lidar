@@ -19,7 +19,7 @@ export default function Home() {
       <VaultBento />
       <SocialProof />
       <FAQSection />
-      <FinalCTA />
+      {/* <FinalCTA /> */}
       <BookingForm />
       <Footer />
     </main>
