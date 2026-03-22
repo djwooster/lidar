@@ -40,12 +40,12 @@ export default function FinalCTA() {
 
           <motion.h2
             id="final-cta-heading"
-            className="font-medium text-white leading-[1.08] tracking-tight mb-6" style={{ fontSize: "clamp(22px, 5.5vw, 36px)" }}
+            className="font-medium text-white leading-[1.08] tracking-tight mb-6"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            style={{ willChange: "transform" }}
+            style={{ willChange: "transform", fontSize: "clamp(22px, 5.5vw, 36px)" }}
           >
             One scan.{" "}
             <span className="text-white/30">A lifetime of answers.</span>
