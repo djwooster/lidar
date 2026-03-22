@@ -68,7 +68,7 @@ export default function HeroSection() {
 
           {/* Headline */}
           <motion.h1
-            className="text-[36px] sm:text-[42px] font-medium text-white leading-[1.08] tracking-tight mb-6"
+            className="text-[28px] sm:text-[42px] font-medium text-white leading-[1.08] tracking-tight mb-6"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={stagger(1)}
@@ -93,7 +93,7 @@ export default function HeroSection() {
 
           {/* CTAs */}
           <motion.div
-            className="flex flex-col sm:flex-row items-start gap-3"
+            className="flex flex-col sm:flex-row items-stretch sm:items-start gap-3"
             initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={stagger(3)}
@@ -101,14 +101,14 @@ export default function HeroSection() {
           >
             <a
               href="#book"
-              className="inline-flex items-center justify-center px-7 py-3.5 bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-sm rounded-lg transition-all duration-150 hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center justify-center px-7 py-3.5 bg-[#f97316] hover:bg-[#ea6c0a] text-white font-semibold text-sm rounded-lg transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto"
               aria-label="Book your pre-drywall scan"
             >
               Book Your Scan
             </a>
             <a
               href="#how-it-works"
-              className="inline-flex items-center justify-center px-7 py-3.5 border border-white/10 hover:border-white/20 text-white/50 hover:text-white/80 font-semibold text-sm rounded-lg transition-all duration-150"
+              className="inline-flex items-center justify-center px-7 py-3.5 border border-white/10 hover:border-white/20 text-white/50 hover:text-white/80 font-semibold text-sm rounded-lg transition-all duration-150 w-full sm:w-auto"
               aria-label="See how Blueprint LiDAR works"
             >
               See How It Works
